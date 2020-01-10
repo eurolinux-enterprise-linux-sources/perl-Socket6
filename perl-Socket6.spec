@@ -1,6 +1,6 @@
 Name:           perl-Socket6
 Version:        0.23
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        IPv6 related part of the C socket.h defines and structure manipulators
 
 Group:          Development/Libraries
@@ -21,6 +21,8 @@ AF_INET6 are included.
 
 %prep
 %setup -q -n Socket6-%{version}
+# RHBZ #953873, CPAN RT #66811
+sed -i -e '/MAN3PODS/d' Makefile.PL
 
 
 %build
@@ -50,9 +52,13 @@ rm -rf $RPM_BUILD_ROOT
 %doc ChangeLog README
 %{perl_vendorarch}/Socket6*
 %{perl_vendorarch}/auto/Socket6/
+%{_mandir}/man3/Socket6.3pm*
 
 
 %changelog
+* Fri Apr 19 2013 Petr Pisar <ppisar@redhat.com> - 0.23-4
+- Produce manual pages (Resolves: #953873)
+
 * Mon Dec  7 2009 Stepan Kasal <skasal@redhat.com> - 0.23-3
 - rebuild against perl 5.10.1
 
